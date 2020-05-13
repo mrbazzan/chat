@@ -1,34 +1,41 @@
 
-from chatMessage import countEachMessage, countTotalMessage
-from chatWord import eachWord, totalWord
+from chatMessage import Main
+from chatWord import MainWord
 
 
-def eachAvgLengthMessage(path, name):
-    """This function gives the average length of message by each person in a private chat."""
+class AvgLength:
 
-    with open(path, 'r'):
-        eachMessage = countEachMessage(path, name)
-        everyWord = eachWord(path, name)
-    avgLength = everyWord / eachMessage
-    return f"Average Length of message by {name} is {everyWord}/" \
-           f"{eachMessage} = {avgLength}"
+    def __init__(self, path):
+        self.path = path
+
+    def eachAvgLengthMessage(self, name):
+        """This function gives the average length of message by each person in a private chat."""
+
+        eachMessage = Main(self.path).countEachMessage(name)
+        everyWord = MainWord(self.path).eachWord(name)
+
+        avgLength = everyWord / eachMessage
+        return f"Average Length of message by {name} is {everyWord}/" \
+               f"{eachMessage} = {avgLength}"
+
+    def totalAvgLengthMessage(self, *name):
+        """This function gives the total average length of message by the two parties in a private chat."""
+
+        eachMessage = Main(self.path).countTotalMessage(name[0], name[1])
+        everyWord = MainWord(self.path).totalWord(name[0], name[1])
+
+        avgLength = everyWord / eachMessage
+        return f"The total Average Length of message is {everyWord}/" \
+               f"{eachMessage} = {avgLength}"
+
+    def __str__(self):
+        return 'This is the Average Length class.'
 
 
-# theName = "Samuel Millimeter"
-# avg = eachAvgLengthMessage("text.txt", theName)
-# print(avg)
+if __name__ == '__main__':
 
+    theName = "Samuel Millimeter"
+    avg = AvgLength('mytest.txt').eachAvgLengthMessage(theName)
+    print(avg)
 
-def totalAvgLengthMessage(*name):
-    """This function gives the total average length of message by the two parties in a private chat."""
-    path = name[0]
-
-    with open(path, 'r'):
-        eachMessage = countTotalMessage(path, name[1], name[2])
-        everyWord = totalWord(path, name[1], name[2])
-    avgLength = everyWord / eachMessage
-    return f"The total Average Length of message is {everyWord}/" \
-           f"{eachMessage} = {avgLength}"
-
-
-# print(totalAvgLengthMessage("text.txt", "Samuel Millimeter", "Bazzan"))
+    print(AvgLength('mytest.txt').totalAvgLengthMessage("Samuel Millimeter", "Bazzan"))
